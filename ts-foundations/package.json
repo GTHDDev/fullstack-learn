@@ -1,0 +1,51 @@
+{
+  "name": "ts-foundations",
+  "version": "1.0.0",
+  "description": "A project to master TypeScript fundamentals, focusing on algorithms, clean code, and SOLID principles.",
+  "main": "src/index.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "lint": "eslint \"src/**/*.{ts,tsx}\" \"tests/**/*.{ts,tsx}\"",
+    "lint:fix": "eslint \"src/**/*.{ts,tsx}\" \"tests/**/*.{ts,tsx}\" --fix",
+    "type-check": "tsc --noEmit",
+    "dev": "npm run type-check && npm run lint",
+    "start": "node dist/index.js"
+  },
+  "devDependencies": {
+    "@types/jest": "^27.0.1",
+    "@typescript-eslint/eslint-plugin": "^8.36.0",
+    "@typescript-eslint/parser": "^8.36.0",
+    "eslint": "^8.57.1",
+    "eslint-config-standard": "^17.1.0",
+    "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-n": "^16.6.2",
+    "eslint-plugin-promise": "^6.6.0",
+    "jest": "^27.0.6",
+    "ts-jest": "^27.0.6",
+    "typescript": "^5.8.3"
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node",
+    "collectCoverageFrom": [
+      "src/**/*.{ts,tsx}",
+      "!src/**/*.d.ts",
+      "!src/**/*.test.{ts,tsx}"
+    ],
+    "coverageDirectory": "coverage",
+    "coverageReporters": ["text", "lcov", "html"]
+  },
+  "keywords": [
+    "typescript",
+    "algorithms",
+    "clean-code",
+    "solid-principles",
+    "data-structures",
+    "learning"
+  ],
+  "author": "Miguel",
+  "license": "MIT"
+}
