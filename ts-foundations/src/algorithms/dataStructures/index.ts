@@ -2,7 +2,7 @@
 // 🎯 LEARNING GOAL: Understand fundamental data structures and their operations
 // 📚 Study: Time complexity (Big-O) for each operation
 
-import { DataStructure } from '../../types';
+import { DataStructure, Tree } from '../../types';
 
 /**
  * 🚀 TASK 1: Implement a Stack using TypeScript generics
@@ -11,35 +11,46 @@ import { DataStructure } from '../../types';
  * - Challenge: How would you implement this with both array and linked list?
  */
 export class Stack<T> implements DataStructure {
-    private items: T[] = [];
-    
-    push(item: T): void {
-        // TODO: Implement push operation
-        // Think: What's the time complexity? O(1) or O(n)?
-        throw new Error('Not implemented yet');
-    }
-    
-    pop(): T | undefined {
-        // TODO: Implement pop operation
-        // Consider: What should happen when stack is empty?
-        throw new Error('Not implemented yet');
-    }
-    
-    peek(): T | undefined {
-        // TODO: Implement peek operation
-        // Think: How is this different from pop?
-        throw new Error('Not implemented yet');
-    }
-    
-    isEmpty(): boolean {
-        // TODO: Implement isEmpty check
-        return false;
-    }
-    
-    size(): number {
-        // TODO: Return current size
-        return 0;
-    }
+	private items: T[] = [];
+
+	push(item: T): number {
+		// TODO: Implement push operation
+		// Think: What's the time complexity? O(1) or O(n)?
+		this.items.push(item)
+		return this.items.length
+	}
+
+	pop(): T | undefined {
+		// TODO: Implement pop operation
+		// Consider: What should happen when stack is empty?
+		if (this.isEmpty()) {
+			throw new Error('Stack is empty')
+		}
+		return this.items.pop()
+	}
+
+	peek(): T | undefined {
+		// TODO: Implement peek operation
+		// Think: How is this different from pop?
+		if (this.isEmpty()) {
+			throw new Error('Stack is empty')
+		}
+		return this.items[this.items.length - 1]
+	}
+
+	isEmpty(): boolean {
+		// TODO: Implement isEmpty check
+		return this.items.length === 0
+	}
+
+	size(): number {
+		// TODO: Return current size
+		return this.items.length
+	}
+
+	clear(): void {
+		this.items = []
+	}
 }
 
 /**
@@ -49,32 +60,33 @@ export class Stack<T> implements DataStructure {
  * - Think: What are real-world applications of queues?
  */
 export class Queue<T> {
-    private items: T[] = [];
-    
-    enqueue(item: T): void {
-        // TODO: Add item to rear of queue
-        // Consider: Array methods - which is most efficient?
-        throw new Error('Not implemented yet');
-    }
-    
-    dequeue(): T | undefined {
-        // TODO: Remove and return front item
-        // Think: Time complexity of shift() vs other approaches
-        throw new Error('Not implemented yet');
-    }
-    
-    front(): T | undefined {
-        // TODO: Return front item without removing
-        throw new Error('Not implemented yet');
-    }
-    
-    isEmpty(): boolean {
-        return this.items.length === 0;
-    }
-    
-    size(): number {
-        return this.items.length;
-    }
+	private items: T[] = [];
+
+	enqueue(item: T): number {
+		// TODO: Add item to rear of queue
+		// Consider: Array methods - which is most efficient?
+		this.items.push(item)
+		return this.items.length
+	}
+
+	dequeue(): T | undefined {
+		// TODO: Remove and return front item
+		// Think: Time complexity of shift() vs other approaches
+		return this.items.shift()
+	}
+
+	front(): T | undefined {
+		// TODO: Return front item without removing
+		return this.items[0]
+	}
+
+	isEmpty(): boolean {
+		return this.items.length === 0;
+	}
+
+	size(): number {
+		return this.items.length;
+	}
 }
 
 /**
@@ -84,33 +96,188 @@ export class Queue<T> {
  * - Research: When are trees better than arrays for searching?
  */
 class TreeNode<T> {
-    constructor(
-        public value: T,
-        public left: TreeNode<T> | null = null,
-        public right: TreeNode<T> | null = null
-    ) {}
+	constructor(
+		public value: T,
+		public left: TreeNode<T> | null = null,
+		public right: TreeNode<T> | null = null
+	) { }
 }
 
 export class BinarySearchTree<T> {
-    private root: TreeNode<T> | null = null;
-    
-    insert(value: T): void {
-        // TODO: Insert value maintaining BST property
-        // Think: Recursive vs iterative approach
-        throw new Error('Not implemented yet');
-    }
-    
-    search(value: T): boolean {
-        // TODO: Search for value in tree
-        // Consider: Average vs worst-case time complexity
-        throw new Error('Not implemented yet');
-    }
-    
-    inorderTraversal(): T[] {
-        // TODO: Return values in sorted order
-        // Study: Why does inorder traversal give sorted result?
-        throw new Error('Not implemented yet');
-    }
+	private root: TreeNode<T> | null = null;
+
+	insert(value: T): boolean {
+		// TODO: Insert value maintaining BST property
+		// Think: Recursive vs iterative approach
+		if (value === null || value === undefined) {
+			throw new Error('Value cannot be null or undefined')
+		}
+
+		if (this.root === null) {
+			this.root = new TreeNode(value)
+			return true
+		}
+		return this.insertNode(this.root, value) !== null
+	}
+
+	private insertNode(node: TreeNode<T>, value: T) {
+		if (value < node.value) {
+			if (node.left === null) {
+				node.left = new TreeNode(value)
+			} else {
+				this.insertNode(node.left, value)
+			}
+		} else if (value > node.value) {
+			if (node.right === null) {
+				node.right = new TreeNode(value)
+			} else {
+				this.insertNode(node.right, value)
+			}
+		}
+		return node
+	}
+
+	search(value: T): boolean {
+		// TODO: Search for value in tree
+		// Consider: Average vs worst-case time complexity
+		let current = this.root
+
+		while (current !== null) {
+			if (value === current.value) {
+				return true
+			} else if (value < current.value) {
+				current = current.left
+			} else {
+				current = current.right
+			}
+		}
+		return false
+	}
+
+	inorderTraversal(): T[] {
+		// TODO: Return values in sorted order
+		// Study: Why does inorder traversal give sorted result?
+		const result: T[] = []
+		this.inorder(this.root, result)
+		return result
+	}
+
+	inorder(node: TreeNode<T> | null, result: T[]) {
+		if (node !== null) {
+			this.inorder(node.left, result)
+			result.push(node.value)
+			this.inorder(node.right, result)
+		}
+	}
+
+	preorderTraversal(): T[] {
+		const result: T[] = []
+		const preorder = (node: TreeNode<T> | null) => {
+			if (node) {
+				result.push(node.value)
+				preorder(node.left)
+				preorder(node.right)
+			}
+		}
+		preorder(this.root)
+		return result
+	}
+
+	postorderTraversal(): T[] {
+		const result: T[] = []
+		const postorder = (node: TreeNode<T> | null) => {
+			if (node) {
+				postorder(node.left)
+				postorder(node.right)
+				result.push(node.value)
+			}
+		}
+		postorder(this.root)
+		return result
+	}
+
+	getRoot(): TreeNode<T> | null {
+		return this.root
+	}
+
+	findMin(): T | null {
+		let current = this.root
+		while (current && current.left) {
+			current = current.left
+		}
+		return current ? current.value : null
+	}
+
+	findMax(): T | null {
+		let current = this.root
+		while (current && current.right) {
+			current = current.right
+		}
+		return current ? current.value : null
+	}
+
+	findMinValue(node: TreeNode<T>): T {
+		let current = node
+		while (current.left) {
+			current = current.left
+		}
+		return current.value
+	}
+
+	delete(value: T): boolean {
+		const deleteRecursive = (node: TreeNode<T> | null, value: T): TreeNode<T> | null => {
+			if (!node) return null
+
+			if (value < node.value) {
+				node.left = deleteRecursive(node.left, value)
+			} else if (value > node.value) {
+				node.right = deleteRecursive(node.right, value)
+			} else {
+				if (!node.left) return node.right
+				if (!node.right) return node.left
+
+				node.value = this.findMinValue(node.right)
+				node.right = deleteRecursive(node.right, node.value)
+			}
+			return node
+		}
+
+		const initialSize = this.size()
+		this.root = deleteRecursive(this.root, value)
+		return this.size() < initialSize
+	}
+
+	size(): number {
+		const countNodes = (node: TreeNode<T> | null): number => {
+			if (!node) return 0
+			return 1 + countNodes(node.left) + countNodes(node.right)
+		}
+		return countNodes(this.root)
+	}
+
+	height(): number {
+		const calculateHeight = (node: TreeNode<T> | null): number => {
+			if (!node) return -1
+			return 1 + Math.max(calculateHeight(node.left), calculateHeight(node.right))
+		}
+		return calculateHeight(this.root)
+	}
+
+	isBalanced(): boolean {
+		const checkBalance = (node: TreeNode<T> | null): number => {
+			if (!node) return 0
+
+			const leftHeight = checkBalance(node.left)
+			if (leftHeight === -1) return -1
+			const rightHeight = checkBalance(node.right)
+			if (rightHeight === -1) return -1
+
+			if (Math.abs(leftHeight - rightHeight) > 1) return -1
+
+			return Math.max(leftHeight, rightHeight)
+		}
+		return checkBalance(this.root) !== -1
+	}
 }
 
 /**
