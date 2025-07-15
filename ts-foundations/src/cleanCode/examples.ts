@@ -10,12 +10,12 @@
 
 // BAD: Unclear, abbreviated names
 function calc(x: number, y: number, z: number): number {
-    return x * y * z;
+	return x * y * z;
 }
 
 // GOOD: Descriptive, intention-revealing names
 function calculateRectangleVolume(length: number, width: number, height: number): number {
-    return length * width * height;
+	return length * width * height;
 }
 
 /**
@@ -26,49 +26,51 @@ function calculateRectangleVolume(length: number, width: number, height: number)
 
 // BAD: Function doing multiple things
 function processUserData(userData: any): void {
-    // Validation
-    if (!userData.email || !userData.name) {
-        throw new Error('Invalid user data');
-    }
-    
-    // Formatting
-    userData.email = userData.email.toLowerCase();
-    userData.name = userData.name.trim();
-    
-    // Saving to database
-    console.log('Saving user:', userData);
-    // database.save(userData);
+	// Validation
+	if (!userData.email || !userData.name) {
+		throw new Error('Invalid user data');
+	}
+
+	// Formatting
+	userData.email = userData.email.toLowerCase();
+	userData.name = userData.name.trim();
+
+	// Saving to database
+	console.log('Saving user:', userData);
+	// database.save(userData);
 }
 
 // GOOD: Separate functions for separate concerns
 interface UserData {
-    email: string;
-    name: string;
+	email: string;
+	name: string;
 }
 
 function validateUserData(userData: UserData): void {
-    if (!userData.email || !userData.name) {
-        throw new Error('Invalid user data');
-    }
+	if (!userData.email || !userData.name) {
+		throw new Error('Invalid user data');
+	}
 }
 
 function formatUserData(userData: UserData): UserData {
-    return {
-        email: userData.email.toLowerCase(),
-        name: userData.name.trim()
-    };
+	return {
+		email: userData.email.toLowerCase(),
+		name: userData.name.trim()
+	};
 }
 
 function saveUserData(userData: UserData): void {
-    console.log('Saving user:', userData);
-    // database.save(userData);
+	console.log('Saving user:', userData);
+	// database.save(userData);
 }
 
 // TODO: Create a coordinator function that uses all three above
 function processUser(userData: UserData): void {
-    // TASK: Implement this using the three functions above
-    // Think: How does this improve testability?
-    throw new Error('Not implemented yet');
+	// TASK: Implement this using the three functions above
+	// Think: How does this improve testability?
+	validateUserData(userData)
+	const formattedUser = formatUserData(userData)
+	saveUserData(formattedUser)
 }
 
 /**
@@ -79,30 +81,45 @@ function processUser(userData: UserData): void {
 
 // BAD: Deep nesting
 function processOrderBad(order: any): string {
-    if (order) {
-        if (order.items && order.items.length > 0) {
-            if (order.customer) {
-                if (order.customer.address) {
-                    return `Processing order for ${order.customer.name}`;
-                } else {
-                    return 'No customer address';
-                }
-            } else {
-                return 'No customer information';
-            }
-        } else {
-            return 'No items in order';
-        }
-    } else {
-        return 'No order provided';
-    }
+	if (order) {
+		if (order.items && order.items.length > 0) {
+			if (order.customer) {
+				if (order.customer.address) {
+					return `Processing order for ${order.customer.name}`;
+				} else {
+					return 'No customer address';
+				}
+			} else {
+				return 'No customer information';
+			}
+		} else {
+			return 'No items in order';
+		}
+	} else {
+		return 'No order provided';
+	}
 }
 
 // GOOD: Early returns with guard clauses
 function processOrderGood(order: any): string {
-    // TODO: Implement this using guard clauses
-    // Think: How does this improve readability?
-    throw new Error('Not implemented yet');
+	// TODO: Implement this using guard clauses
+	// Think: How does this improve readability?
+	if (!order) {
+		return 'No order provided'
+	}
+	if (!order.items || order.items.length === 0) {
+		return 'No items in order'
+	}
+
+	if (!order.customer) {
+		return 'No customer information'
+	}
+
+	if (!order.customer.address) {
+		return 'No customer address'
+	}
+
+	return `Processing order for ${order.customer.name}`
 }
 
 /**
@@ -113,24 +130,30 @@ function processOrderGood(order: any): string {
 
 // BAD: Magic numbers
 function calculateDiscountBad(price: number, customerType: string): number {
-    if (customerType === 'premium') {
-        return price * 0.8; // What does 0.8 mean?
-    } else if (customerType === 'regular') {
-        return price * 0.95; // What does 0.95 mean?
-    }
-    return price;
+	if (customerType === 'premium') {
+		return price * 0.8; // What does 0.8 mean?
+	} else if (customerType === 'regular') {
+		return price * 0.95; // What does 0.95 mean?
+	}
+	return price;
 }
 
 // GOOD: Named constants
 const DISCOUNT_RATES = {
-    PREMIUM: 0.8,  // 20% discount
-    REGULAR: 0.95  // 5% discount
+	PREMIUM: 0.8,  // 20% discount
+	REGULAR: 0.95  // 5% discount
 } as const;
 
 function calculateDiscountGood(price: number, customerType: string): number {
-    // TODO: Implement using the constants above
-    // Think: How does this improve maintainability?
-    throw new Error('Not implemented yet');
+	// TODO: Implement using the constants above
+	// Think: How does this improve maintainability?
+	if (customerType === 'premium') {
+		return price * DISCOUNT_RATES.PREMIUM
+	} else if (customerType === 'regular') {
+		return price * DISCOUNT_RATES.REGULAR
+	}
+
+	return price
 }
 
 /**
@@ -140,24 +163,40 @@ function calculateDiscountGood(price: number, customerType: string): number {
  */
 
 class ValidationError extends Error {
-    constructor(message: string) {
-        super(message);
-        this.name = 'ValidationError';
-    }
+	constructor(message: string) {
+		super(message);
+		this.name = 'ValidationError';
+	}
 }
 
 class DatabaseError extends Error {
-    constructor(message: string) {
-        super(message);
-        this.name = 'DatabaseError';
-    }
+	constructor(message: string) {
+		super(message);
+		this.name = 'DatabaseError';
+	}
 }
 
 // TODO: Implement a function that demonstrates proper error handling
-function createUserAccount(userData: UserData): Promise<string> {
-    // TASK: Implement with proper error handling
-    // Consider: When to throw vs when to return error objects
-    throw new Error('Not implemented yet');
+async function createUserAccount(userData: UserData): Promise<string> {
+  try {
+    validateUserData(userData);
+    const formattedUser = formatUserData(userData);
+
+    const success = Math.random() > 0.2;
+    if (!success) {
+      throw new DatabaseError('Failed to save user');
+    }
+    saveUserData(formattedUser);
+    return 'User account created successfully';
+  } catch (error) {
+    if (error instanceof ValidationError) {
+      throw error;
+    } else if (error instanceof DatabaseError) {
+      throw error;
+    } else {
+      throw new Error('Unexpected error occurred');
+    }
+  }
 }
 
 /**
