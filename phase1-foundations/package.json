@@ -1,0 +1,63 @@
+{
+  "name": "phase1-foundations",
+  "version": "1.0.0",
+  "description": "Phase 1: Core Programming Foundations - JavaScript, TypeScript, Algorithms, Clean Code, and Testing",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "dev": "ts-node src/index.ts",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "lint": "eslint src/**/*.ts",
+    "lint:fix": "eslint src/**/*.ts --fix",
+    "format": "prettier --write src/**/*.ts",
+    "format:check": "prettier --check src/**/*.ts",
+    "clean": "rimraf dist",
+    "start": "node dist/index.js",
+    "challenge1": "ts-node src/challenge1-js-fundamentals/index.ts",
+    "challenge2": "ts-node src/challenge2-async-javascript/index.ts",
+    "challenge3": "ts-node src/challenge3-typescript-types/index.ts",
+    "challenge4": "ts-node src/challenge4-algorithms/index.ts",
+    "challenge5": "ts-node src/challenge5-design-patterns/index.ts",
+    "challenge6": "ts-node src/challenge6-testing/index.ts",
+    "test:challenge1": "jest --testPathPattern=challenge1",
+    "test:challenge2": "jest --testPathPattern=challenge2",
+    "test:challenge3": "jest --testPathPattern=challenge3",
+    "test:challenge4": "jest --testPathPattern=challenge4",
+    "test:challenge5": "jest --testPathPattern=challenge5",
+    "test:challenge6": "jest --testPathPattern=challenge6",
+    "validate": "npm run lint && npm run format:check && npm run test:coverage"
+  },
+  "keywords": [
+    "typescript",
+    "javascript",
+    "algorithms",
+    "clean-code",
+    "solid-principles",
+    "testing",
+    "design-patterns"
+  ],
+  "author": "Miguel",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/jest": "^29.5.0",
+    "@types/node": "^20.0.0",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "eslint": "^8.0.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-prettier": "^5.0.0",
+    "jest": "^29.5.0",
+    "prettier": "^3.0.0",
+    "rimraf": "^5.0.0",
+    "ts-jest": "^29.1.0",
+    "ts-node": "^10.9.0",
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {},
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  }
+}
