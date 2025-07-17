@@ -21,9 +21,9 @@ export interface Algorithm<T> {
  * - Consider: What operations are common to all data structures?
  */
 export interface DataStructure {
-    push(item: any): void;
-    pop(): any;
-    peek(): any;
+    push(item: T): void;
+    pop(): T | undefined;
+    peek(): T | undefined;
     isEmpty(): boolean;
     size(): number;
 }
